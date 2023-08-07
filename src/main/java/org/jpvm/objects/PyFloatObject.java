@@ -15,8 +15,6 @@ public class PyFloatObject extends PyObject{
 
     @Override
     public String toString() {
-        return "PyFloatObject{" +
-                "data=" + data +
-                '}';
+        return String.valueOf(data);
     }
 }
