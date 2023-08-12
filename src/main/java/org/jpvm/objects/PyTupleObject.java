@@ -2,7 +2,7 @@ package org.jpvm.objects;
 
 import java.util.Arrays;
 
-public class PyTupleObject {
+public class PyTupleObject extends PyObject{
     private final PyObject[] obItem;
 
     public PyTupleObject(int size) {

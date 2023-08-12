@@ -6,6 +6,7 @@ import org.jpvm.objects.PyObject;
 public class CodeObject extends PyObject {
     private int coArgcount;//argument
     private int coKwOnlyArgcount;//keyword args
+    private int coPosOnlyArgcount;
     private int coNLocals;//local variables
     private int coStacksize;//max size
     private int coFlags;//表示codeobject属性特征

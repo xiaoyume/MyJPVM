@@ -1,11 +1,40 @@
 package org.jpvm.pycParser;
 
-public class PycReader {
+import lombok.Data;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
+@Data
+public class PycReader {
+    private final String pyc;
     private int magicNumber;
     private int bitFiled;
     private int timestamp;
     private int fileSize;
+    private CodeObject codeObject;
 
+    public PycReader(String filename) {
+        this.pyc = filename;
+    }
+
+    public void doParse() throws IOException {
+        FileInputStream stream = new FileInputStream(pyc);
+        magicNumber = nextInt(stream);
+        bitFiled = nextInt(stream);
+        timestamp = nextInt(stream);
+        fileSize = nextInt(stream);
+        stream.close();
+    }
+
+    public static int nextInt(FileInputStream stream) throws IOException {
+        var bytes = new byte[4];
+        var size = stream.read(bytes);
+        assert size == 4;
+        return ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).getInt();
+    }
 
 }
