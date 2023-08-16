@@ -21,14 +21,17 @@ public class PycReader {
         this.pyc = filename;
     }
 
-    public void doParse() throws IOException {
+    public void doParse() throws IOException, IllegalAccessException {
         FileInputStream stream = new FileInputStream(pyc);
         magicNumber = nextInt(stream);
         bitFiled = nextInt(stream);
         timestamp = nextInt(stream);
         fileSize = nextInt(stream);
+        Marshal marshal = new Marshal();
+        marshal.loadPyObject(stream);
         stream.close();
     }
+
 
     public static int nextInt(FileInputStream stream) throws IOException {
         var bytes = new byte[4];

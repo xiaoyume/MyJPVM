@@ -13,12 +13,13 @@ import java.nio.ByteBuffer;
 
 public class ParserTest {
     @Test
-    public void testhead() throws IOException {
+    public void testhead() throws IOException, IllegalAccessException {
         String fpath = "src/test/resources/pys/__pycache__/add.cpython-38.pyc";
         PycReader pycReader = new PycReader(fpath);
         pycReader.doParse();
         System.out.println(pycReader.getTimestamp());
         System.out.println(pycReader.getMagicNumber());
+        System.out.println(pycReader.getCodeObject());
     }
     @Test
     public void codeObjTest() throws IOException, IllegalAccessException {
@@ -38,7 +39,7 @@ public class ParserTest {
 
     @Test
     public void test1(){
-        byte b = (byte) 0xE;
+        byte b = 'a';
         System.out.println(b);
     }
 }

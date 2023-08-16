@@ -85,6 +85,19 @@ public class Marshal {
         }
     }
 
+    /**
+     *重写一个加载对象方法，使用fileinputstream做参数
+     * @param stream
+     * @return
+     * @throws IOException
+     */
+    public PyObject loadPyObject(FileInputStream stream) throws IOException, IllegalAccessException {
+        int size = stream.available();
+        byte[] bytes = new byte[size];
+        var s = stream.read(bytes);
+        //小端存储
+        return loadPyObject(ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN));
+    }
     public PyObject loadPyObject(ByteBuffer buffer) throws IllegalAccessException {
         byte b = buffer.get();
         int code = b & 0xff;
