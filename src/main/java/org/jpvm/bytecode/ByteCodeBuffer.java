@@ -35,7 +35,7 @@ public class ByteCodeBuffer {
 
         @Override
         public boolean hasNext() {
-            return cursor < codeBuf.length - 2;
+            return cursor < codeBuf.length;
         }
 
         @Override
@@ -45,12 +45,15 @@ public class ByteCodeBuffer {
             }
             Instruction instruction = new Instruction();
             int opcode;
-            int oparg;
+            int oparg = 0;//没有参数
             instruction.setPos(cursor);
             int extendedArg = 0;
             do {
                 //一条指令是占两个字节，opcode+oparg
                 opcode = codeBuf[cursor++] & 0xff;
+                if(opcode == 0){
+                    break;
+                }
                 if(opcode >= OpMap.HAVE_ARGUMENT){//有参数的操作码
                     oparg = (codeBuf[cursor++] & 0xff) | extendedArg;
                     if (opcode == OpMap.EXTENDED_ARG) {//如果是拓展参数，参数超界限
@@ -61,10 +64,7 @@ public class ByteCodeBuffer {
                     }else{
                         extendedArg = 0;
                     }
-                }else{
-                    oparg = -1;//操作没有参数
                 }
-
             }while(opcode == OpMap.EXTENDED_ARG);
             instruction.setOpcode(opcode);
             instruction.setOpName(OpMap.instructions.get(opcode));

@@ -14,7 +14,8 @@ public class Disassember {
 
     private CodeObject codeObject;
     private ByteCodeBuffer buffer;
-    public Disassember(CodeObject codeObject){
+
+    public Disassember(CodeObject codeObject) {
         this.codeObject = codeObject;
         buffer = new ByteCodeBuffer(codeObject);
     }
@@ -22,25 +23,39 @@ public class Disassember {
     /**
      * 字节码反编译
      */
-    public void dis(){
+    public void dis() {
         Iterator<Instruction> iterator = buffer.iterator();
         StringBuilder builder = new StringBuilder();
-        while(iterator.hasNext()){
-            builder.delete(0, builder.length());
+        while (iterator.hasNext()) {
             Instruction ins = iterator.next();
-            builder.append(ins.getPos());
+            if (ins.getOpcode() == 0) {
+                break;
+            }
+            builder.delete(0, builder.length());
+            builder.append(String.format("%4d", ins.getPos()));
             builder.append(" ");
-            builder.append(ins.getOpName());
+            builder.append(String.format("%-15s", ins.getOpName()));
             builder.append("\t");
             builder.append(ins.getOparg());
-            switch (ins.getOpName()){
+            switch (ins.getOpName()) {
                 case LOAD_CONST -> {
-                    var coConsts = (PyTupleObject)codeObject.getCoConsts();
-                    builder.append("(").append(coConsts.get(ins.getOparg())).append(")");
+                    var coConsts = (PyTupleObject) codeObject.getCoConsts();
+                    if (coConsts.get(ins.getOparg()) instanceof CodeObject) {
+                        var cb = (CodeObject) coConsts.get(ins.getOparg());
+                        builder.append(" <CodeObject ").append(cb.getCoName())
+                                .append(" @0x")
+                                .append(Integer.toHexString(System.identityHashCode(cb)))
+                                .append(" ")
+                                .append(cb.getCoFilename()).append(", line ")
+                                .append(cb.getCoFirstLineNo()).append(" >");
+                    } else {
+                        builder.append("(").append(coConsts.get(ins.getOparg())).append(")");
+                    }
+
                 }
-                case STORE_NAME -> {
-                    var coVarnames = (PyTupleObject)codeObject.getCoVarnames();
-                    builder.append("(").append(coVarnames.get(ins.getOparg())).append(")");
+                case STORE_NAME, LOAD_NAME -> {
+                    var coNames = (PyTupleObject) codeObject.getCoNames();
+                    builder.append("(").append(coNames.get(ins.getOparg())).append(")");
                 }
             }
             System.out.println(builder);

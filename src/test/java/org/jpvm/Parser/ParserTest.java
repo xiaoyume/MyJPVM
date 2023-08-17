@@ -63,14 +63,14 @@ public class ParserTest {
         }
     }
 
-//    @Test
-//    public void disTest() throws IOException, IllegalAccessException {
-//        String fpath = "src/test/resources/pys/__pycache__/add.cpython-38.pyc";
-//        PycReader pycReader = new PycReader(fpath);
-//        pycReader.doParse();
-//        CodeObject codeObject = pycReader.getCodeObject();
-//        Disassember disassember = new Disassember(codeObject);
-////        disassember.dis();
-//
-//    }
+    @Test
+    public void disTest() throws IOException, IllegalAccessException {
+        String fpath = "src/test/resources/pys/__pycache__/add.cpython-38.pyc";
+        PycReader pycReader = new PycReader(fpath);
+        pycReader.doParse();
+        CodeObject codeObject = pycReader.getCodeObject();
+        Disassember disassember = new Disassember(codeObject);
+        disassember.dis();
+
+    }
 }
