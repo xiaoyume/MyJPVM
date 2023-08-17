@@ -73,18 +73,28 @@ public class Marshal {
         if (flag != 0) {
             assert (flag & TYPE.FLAG_REF) != 0;
             if (o == null) {
-                return null;
+                return BuiltIn.NULL;
             }
             refs.app1(o);
         }
         return o;
     }
 
-    public void RREFReserve() {
+    public int RREFReserve() {
         if (flag != 0) {
+            int size = refs.size();
             refs.app1(BuiltIn.None);
+            return size;
+        }
+        return 0;
+    }
+
+    public void RREFInsert(int idx, PyObject o){
+        if(flag != 0){
+            refs.set(idx, o);
         }
     }
+
 
     /**
      *重写一个加载对象方法，使用fileinputstream做参数
@@ -100,8 +110,7 @@ public class Marshal {
         return loadPyObject(ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN));
     }
     public PyObject loadPyObject(ByteBuffer buffer) throws IllegalAccessException {
-        byte b = buffer.get();
-        int code = b & 0xff;
+        int code = buffer.get() & 0xff;
         int type = code & (~TYPE.FLAG_REF);
         flag = code & TYPE.FLAG_REF;
         return switch (type) {
@@ -128,8 +137,8 @@ public class Marshal {
             case TYPE.TYPE_SHORT_ASCII -> loadASCII(buffer, false, true);
             case TYPE.TYPE_SHORT_ASCII_INTERNED -> loadASCII(buffer, true, true);
             case TYPE.TYPE_DICT -> loadDict(buffer);
-            case TYPE.TYPE_SET -> loadSet(buffer, true);
-            case TYPE.TYPE_FROZENSET -> loadSet(buffer, false);
+            case TYPE.TYPE_SET -> loadSet(buffer, false);
+            case TYPE.TYPE_FROZENSET -> loadSet(buffer, true);
             case TYPE.TYPE_REF -> loadRef(buffer);
             default -> throw new IllegalAccessException("Unexpected value: " + type);
         };
@@ -137,7 +146,7 @@ public class Marshal {
 
     private PyObject loadRef(ByteBuffer buffer) {
         int i = buffer.getInt();
-        return refs.get(i - 1);
+        return refs.get(i);
     }
 
     private PySetObject loadSet(ByteBuffer buffer, boolean isFrozen) throws IllegalAccessException {
@@ -146,10 +155,18 @@ public class Marshal {
             RREF(BuiltIn.FROZENSET);
             return BuiltIn.FROZENSET;
         } else {
+            int idx = 0;
             PySetObject setObject = new PySetObject(isFrozen);
-            RREF(setObject);
+            if(!isFrozen){
+                RREF(setObject);
+            }else {
+                idx = RREFReserve();
+            }
             for (int i = 0; i < s; i++){
                 setObject.put(loadPyObject(buffer));
+            }
+            if(isFrozen){
+                RREFInsert(idx, setObject);
             }
             return setObject;
         }
@@ -157,6 +174,7 @@ public class Marshal {
 
     private PyDictObject loadDict(ByteBuffer buffer) throws IllegalAccessException {
         PyDictObject pyDictObject = new PyDictObject();
+        RREF(pyDictObject);
         for (; ; ) {
             PyObject key = loadPyObject(buffer);
             if (key == BuiltIn.NULL) {
@@ -175,14 +193,14 @@ public class Marshal {
     private PyUnicodeObject loadASCII(ByteBuffer buffer, boolean interned, boolean isShort) {
         int size;
         if (isShort) {
-            size = buffer.get();
+            size = buffer.get() & 0xff;
         } else {
             size = buffer.getInt();
         }
         byte[] bytes = new byte[size];
         buffer.get(bytes);
         PyUnicodeObject object = new PyUnicodeObject(bytes);
-        object = (PyUnicodeObject) RREF(object);
+        RREF(object);
         return object;
     }
 
@@ -208,7 +226,7 @@ public class Marshal {
     }
 
     private PyFloatObject loadFloat(ByteBuffer buffer) {
-        int s = buffer.get();
+        int s = buffer.get() & 0xff;
         if (s == 4) {
             PyFloatObject floatObject = new PyFloatObject(buffer.getFloat());
             RREF(floatObject);
@@ -228,6 +246,7 @@ public class Marshal {
     private PyListObject loadList(ByteBuffer buffer) throws IllegalAccessException {
         int s = buffer.getInt();
         PyListObject pyListObject = new PyListObject(s);
+        RREF(pyListObject);
         for (int i = 0; i < s; i++) {
             pyListObject.app1(loadPyObject(buffer));
         }
@@ -249,6 +268,7 @@ public class Marshal {
     }
     public CodeObject loadCodeObject(ByteBuffer buffer) throws IllegalAccessException {
         CodeObject codeObject = new CodeObject();
+        int idx = RREFReserve();//先保存一个空值引用占位，后面会把codeobj对象存储得到这个位置
         codeObject.setCoArgcount(buffer.getInt());
         codeObject.setCoPosOnlyArgcount(buffer.getInt());
         codeObject.setCoKwOnlyArgcount(buffer.getInt());
@@ -266,12 +286,14 @@ public class Marshal {
         codeObject.setCoName(loadPyObject(buffer));
         codeObject.setCoFirstLineNo(buffer.getInt());
         codeObject.setCoLnotab(loadPyObject(buffer));
+        RREFInsert(idx, codeObject);//
         return codeObject;
     }
 
     private PyTupleObject loadTuple(ByteBuffer buffer) throws IllegalAccessException {
         int s = buffer.getInt();
         PyTupleObject tupleObject = new PyTupleObject(s);
+        RREF(tupleObject);
         for (int i = 0; i < s; i++) {
             tupleObject.set(i, loadPyObject(buffer));
         }
@@ -280,7 +302,7 @@ public class Marshal {
     }
 
     private PyTupleObject loadSmallTuple(ByteBuffer buffer) throws IllegalAccessException {
-        int s = buffer.get();
+        int s = buffer.get() & 0xff;
         PyTupleObject tupleObject = new PyTupleObject(s);
         for (int i = 0; i < s; i++) {
             tupleObject.set(i, loadPyObject(buffer));

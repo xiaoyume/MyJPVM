@@ -2,8 +2,9 @@ package org.jpvm.objects;
 
 import lombok.Data;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-@Data
+
 public class PyUnicodeObject extends PyObject{
     private byte[] data;
 
@@ -11,10 +12,16 @@ public class PyUnicodeObject extends PyObject{
         this.data = data;
     }
 
+    public String getData() {
+        return new String(data, StandardCharsets.UTF_8);
+    }
+
+    public void setData(String s) {
+        this.data = s.getBytes(StandardCharsets.UTF_8);
+    }
+
     @Override
     public String toString() {
-        return "PyUnicodeObject{" +
-                "data=" + Arrays.toString(data) +
-                '}';
+        return "'" + getData() + "'";
     }
 }

@@ -1,10 +1,11 @@
 package org.jpvm.bytecode;
 
+import lombok.Data;
 import org.jpvm.objects.PyByteObject;
 import org.jpvm.pycParser.CodeObject;
 
 import java.util.Iterator;
-
+@Data
 public class ByteCodeBuffer {
     private final CodeObject codeObject;
     private final PyByteObject code;
@@ -34,7 +35,7 @@ public class ByteCodeBuffer {
 
         @Override
         public boolean hasNext() {
-            return cursor != codeBuf.length;
+            return cursor < codeBuf.length - 2;
         }
 
         @Override
@@ -64,7 +65,7 @@ public class ByteCodeBuffer {
                     oparg = -1;//操作没有参数
                 }
 
-            }while(opcode != OpMap.EXTENDED_ARG);
+            }while(opcode == OpMap.EXTENDED_ARG);
             instruction.setOpcode(opcode);
             instruction.setOpName(OpMap.instructions.get(opcode));
             instruction.setOparg(oparg);

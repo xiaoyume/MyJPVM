@@ -1,12 +1,17 @@
 package org.jpvm.Parser;
 
+import org.jpvm.bytecode.ByteCodeBuffer;
+import org.jpvm.bytecode.Instruction;
+import org.jpvm.module.Disassember;
 import org.jpvm.pycParser.CodeObject;
 import org.jpvm.module.Marshal;
 import org.jpvm.pycParser.PycReader;
 import org.junit.Test;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 public class ParserTest {
     @Test
@@ -39,4 +44,33 @@ public class ParserTest {
         byte b = 'a';
         System.out.println(b);
     }
+
+    @Test
+    public void codebuftest() throws IOException, IllegalAccessException {
+        String fpath = "src/test/resources/pys/__pycache__/add.cpython-38.pyc";
+        PycReader pycReader = new PycReader(fpath);
+        pycReader.doParse();
+        CodeObject codeObject = pycReader.getCodeObject();
+        System.out.println(codeObject);
+        ByteCodeBuffer codeBuffer = new ByteCodeBuffer(codeObject);
+        System.out.println(codeBuffer.getCode());
+        Iterator<Instruction> iterator = codeBuffer.iterator();
+        while (iterator.hasNext()){
+            Instruction next = iterator.next();
+            System.out.println(next.getOpcode());
+            System.out.println(next.getOparg());
+            System.out.println("*******");
+        }
+    }
+
+//    @Test
+//    public void disTest() throws IOException, IllegalAccessException {
+//        String fpath = "src/test/resources/pys/__pycache__/add.cpython-38.pyc";
+//        PycReader pycReader = new PycReader(fpath);
+//        pycReader.doParse();
+//        CodeObject codeObject = pycReader.getCodeObject();
+//        Disassember disassember = new Disassember(codeObject);
+////        disassember.dis();
+//
+//    }
 }
