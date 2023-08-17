@@ -1,15 +1,12 @@
 package org.jpvm.Parser;
 
 import org.jpvm.pycParser.CodeObject;
-import org.jpvm.pycParser.Marshal;
+import org.jpvm.module.Marshal;
 import org.jpvm.pycParser.PycReader;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class ParserTest {
     @Test

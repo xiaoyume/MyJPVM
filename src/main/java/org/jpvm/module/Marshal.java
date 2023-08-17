@@ -1,6 +1,7 @@
-package org.jpvm.pycParser;
+package org.jpvm.module;
 
 import org.jpvm.objects.*;
+import org.jpvm.pycParser.CodeObject;
 
 import javax.swing.*;
 import java.io.FileInputStream;

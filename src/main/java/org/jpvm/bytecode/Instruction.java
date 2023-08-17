@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Instruction {
+    private int pos;
     private OpMap.OpName opName;
     private int opcode;
     private int oparg;

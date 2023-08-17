@@ -45,19 +45,25 @@ public class ByteCodeBuffer {
             Instruction instruction = new Instruction();
             int opcode;
             int oparg;
+            instruction.setPos(cursor);
             int extendedArg = 0;
             do {
                 //一条指令是占两个字节，opcode+oparg
                 opcode = codeBuf[cursor++] & 0xff;
-                oparg = (codeBuf[cursor++] & 0xff) | extendedArg;
-                if (opcode == OpMap.EXTENDED_ARG) {//如果是拓展参数，参数超界限
-                    /**
-                     *
-                     */
-                    extendedArg = oparg << 8;
+                if(opcode >= OpMap.HAVE_ARGUMENT){//有参数的操作码
+                    oparg = (codeBuf[cursor++] & 0xff) | extendedArg;
+                    if (opcode == OpMap.EXTENDED_ARG) {//如果是拓展参数，参数超界限
+                        /**
+                         *
+                         */
+                        extendedArg = oparg << 8;
+                    }else{
+                        extendedArg = 0;
+                    }
                 }else{
-                    extendedArg = 0;
+                    oparg = -1;//操作没有参数
                 }
+
             }while(opcode != OpMap.EXTENDED_ARG);
             instruction.setOpcode(opcode);
             instruction.setOpName(OpMap.instructions.get(opcode));
