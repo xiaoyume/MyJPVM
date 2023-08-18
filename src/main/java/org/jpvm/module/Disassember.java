@@ -15,8 +15,8 @@ import java.util.Iterator;
 @Data
 public class Disassember {
 
-    private CodeObject codeObject;
-    private ByteCodeBuffer buffer;
+    private final CodeObject codeObject;
+    private final ByteCodeBuffer buffer;
 
     public Disassember(CodeObject codeObject) {
         this.codeObject = codeObject;
@@ -51,12 +51,11 @@ public class Disassember {
             builder.append(" ");
             builder.append(String.format("%-15s", ins.getOpName()));
             builder.append("\t");
-            builder.append(ins.getOparg());
+            builder.append(String.format("%3d", ins.getOparg()));
             switch (ins.getOpName()) {
                 case LOAD_CONST -> {
                     var coConsts = (PyTupleObject) codeObject.getCoConsts();
-                    if (coConsts.get(ins.getOparg()) instanceof CodeObject) {
-                        var cb = (CodeObject) coConsts.get(ins.getOparg());
+                    if (coConsts.get(ins.getOparg()) instanceof CodeObject cb) {
                         builder.append(" <CodeObject ").append(cb.getCoName())
                                 .append(" @0x")
                                 .append(Integer.toHexString(System.identityHashCode(cb)))
