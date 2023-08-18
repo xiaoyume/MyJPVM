@@ -22,6 +22,9 @@ public class PycReader {
     }
 
     public void doParse() throws IOException, IllegalAccessException {
+        /*
+        4x4字节是文件头信息，
+         */
         FileInputStream stream = new FileInputStream(pyc);
         magicNumber = nextInt(stream);
         bitFiled = nextInt(stream);

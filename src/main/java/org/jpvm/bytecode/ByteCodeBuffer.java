@@ -5,8 +5,9 @@ import org.jpvm.objects.PyByteObject;
 import org.jpvm.pycParser.CodeObject;
 
 import java.util.Iterator;
+
 @Data
-public class ByteCodeBuffer implements Iterable<Instruction>{
+public class ByteCodeBuffer implements Iterable<Instruction> {
     private final CodeObject codeObject;
     private final PyByteObject code;
     private final byte[] codeBuf;
@@ -40,7 +41,7 @@ public class ByteCodeBuffer implements Iterable<Instruction>{
 
         @Override
         public Instruction next() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new UnsupportedOperationException("no more elements");
             }
             Instruction instruction = new Instruction();
@@ -51,21 +52,21 @@ public class ByteCodeBuffer implements Iterable<Instruction>{
             do {
                 //一条指令是占两个字节，opcode+oparg
                 opcode = codeBuf[cursor++] & 0xff;
-                if(opcode == 0){
+                if (opcode == 0) {
                     break;
                 }
-                if(opcode >= OpMap.HAVE_ARGUMENT){//有参数的操作码
+                if (opcode >= OpMap.HAVE_ARGUMENT) {//有参数的操作码
                     oparg = (codeBuf[cursor++] & 0xff) | extendedArg;
                     if (opcode == OpMap.EXTENDED_ARG) {//如果是拓展参数，参数超界限
                         /**
                          *
                          */
                         extendedArg = oparg << 8;
-                    }else{
+                    } else {
                         extendedArg = 0;
                     }
                 }
-            }while(opcode == OpMap.EXTENDED_ARG);
+            } while (opcode == OpMap.EXTENDED_ARG);
             instruction.setOpcode(opcode);
             instruction.setOpName(OpMap.instructions.get(opcode));
             instruction.setOparg(oparg);
@@ -73,7 +74,7 @@ public class ByteCodeBuffer implements Iterable<Instruction>{
             return instruction;
         }
 
-        public boolean resetCursor(int pos){
+        public boolean resetCursor(int pos) {
             cursor = pos;
             return true;
         }

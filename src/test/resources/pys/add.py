@@ -1,4 +1,5 @@
-a = 1
-b = 2
-c = a + b
-print(c)
+def add(a, b):
+    return a + b
+
+data = add(1, 2)
+print(data)

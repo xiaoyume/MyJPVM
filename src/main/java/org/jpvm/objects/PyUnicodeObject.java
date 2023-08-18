@@ -5,7 +5,7 @@ import lombok.Data;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public class PyUnicodeObject extends PyObject{
+public class PyUnicodeObject extends PyObject {
     private byte[] data;
 
     public PyUnicodeObject(byte[] data) {

@@ -49,7 +49,8 @@ public class PyListObject extends PyObject {
         }
         return obItem.get(idx);
     }
-    public void set(int idx, PyObject o){
+
+    public void set(int idx, PyObject o) {
         obItem.set(idx, o);
     }
 
@@ -61,11 +62,11 @@ public class PyListObject extends PyObject {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
-        for (PyObject object : obItem){
+        for (PyObject object : obItem) {
             builder.append(object.toString());
             builder.append(", ");
         }
-        if(builder.length() > 2){
+        if (builder.length() > 2) {
             builder.delete(builder.length() - 2, builder.length());
 
         }

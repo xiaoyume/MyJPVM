@@ -3,7 +3,7 @@ package org.jpvm.objects;
 import lombok.Data;
 
 @Data
-public class PyComplexObject extends PyObject{
+public class PyComplexObject extends PyObject {
     private PyFloatObject real;
     private PyFloatObject image;
 

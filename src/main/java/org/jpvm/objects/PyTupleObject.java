@@ -2,7 +2,7 @@ package org.jpvm.objects;
 
 import java.util.Arrays;
 
-public class PyTupleObject extends PyObject{
+public class PyTupleObject extends PyObject {
     private final PyObject[] obItem;
 
     public PyTupleObject(int size) {
@@ -28,7 +28,7 @@ public class PyTupleObject extends PyObject{
             builder.append(object.toString());
             builder.append(", ");
         }
-        if(builder.length() > 2){
+        if (builder.length() > 2) {
             builder.delete(builder.length() - 2, builder.length());
         }
         builder.append(")");

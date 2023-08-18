@@ -3,8 +3,9 @@ package org.jpvm.objects;
 import lombok.Data;
 
 import java.util.Arrays;
+
 @Data
-public class PyByteObject extends PyObject{
+public class PyByteObject extends PyObject {
 
     private byte[] data;
 

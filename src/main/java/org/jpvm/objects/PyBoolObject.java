@@ -3,7 +3,7 @@ package org.jpvm.objects;
 import lombok.Data;
 
 @Data
-public class PyBoolObject extends PyObject{
+public class PyBoolObject extends PyObject {
     private boolean bool;
 
     public PyBoolObject(boolean bool) {

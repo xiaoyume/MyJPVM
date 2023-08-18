@@ -89,15 +89,16 @@ public class Marshal {
         return 0;
     }
 
-    public void RREFInsert(int idx, PyObject o){
-        if(flag != 0){
+    public void RREFInsert(int idx, PyObject o) {
+        if (flag != 0) {
             refs.set(idx, o);
         }
     }
 
 
     /**
-     *重写一个加载对象方法，使用fileinputstream做参数
+     * 重写一个加载对象方法，使用fileinputstream做参数
+     *
      * @param stream
      * @return
      * @throws IOException
@@ -109,6 +110,7 @@ public class Marshal {
         //小端存储
         return loadPyObject(ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN));
     }
+
     public PyObject loadPyObject(ByteBuffer buffer) throws IllegalAccessException {
         int code = buffer.get() & 0xff;
         int type = code & (~TYPE.FLAG_REF);
@@ -157,15 +159,15 @@ public class Marshal {
         } else {
             int idx = 0;
             PySetObject setObject = new PySetObject(isFrozen);
-            if(!isFrozen){
+            if (!isFrozen) {
                 RREF(setObject);
-            }else {
+            } else {
                 idx = RREFReserve();
             }
-            for (int i = 0; i < s; i++){
+            for (int i = 0; i < s; i++) {
                 setObject.put(loadPyObject(buffer));
             }
-            if(isFrozen){
+            if (isFrozen) {
                 RREFInsert(idx, setObject);
             }
             return setObject;
@@ -259,13 +261,14 @@ public class Marshal {
         return (CodeObject) loadPyObject(buffer);
     }
 
-    public  CodeObject loadCodeObject(FileInputStream stream) throws IOException, IllegalAccessException {
+    public CodeObject loadCodeObject(FileInputStream stream) throws IOException, IllegalAccessException {
         var size = stream.available();
         byte[] bytes = new byte[size];
         var s = stream.read(bytes);
         ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
-        return (CodeObject)loadPyObject(buffer);
+        return (CodeObject) loadPyObject(buffer);
     }
+
     public CodeObject loadCodeObject(ByteBuffer buffer) throws IllegalAccessException {
         CodeObject codeObject = new CodeObject();
         int idx = RREFReserve();//先保存一个空值引用占位，后面会把codeobj对象存储得到这个位置

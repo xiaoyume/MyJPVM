@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OpMap {
-    public enum OpName{
+    public enum OpName {
         POP_TOP, ROT_TWO, ROT_THREE, DUP_TOP, DUP_TOP_TWO,
         ROT_FOUR, NOP, UNARY_POSITIVE, UNARY_NEGATIVE, UNARY_NOT,
         UNARY_INVERT, BINARY_MATRIX_MULTIPLY, INPLACE_MATRIX_MULTIPLY,
@@ -40,6 +40,7 @@ public class OpMap {
 
     public static int EXTENDED_ARG = 144;//扩展指令，后两个字节变为操作数后与前面的指令形成完整的指令
     public static Map<Integer, OpName> instructions = new HashMap<>();
+
     //类中的静态代码块，创建类实例同时，建立指令映射
     static {
         instructions.put(1, OpName.POP_TOP);

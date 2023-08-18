@@ -4,7 +4,6 @@ import lombok.Data;
 import org.jpvm.bytecode.ByteCodeBuffer;
 import org.jpvm.bytecode.Instruction;
 import org.jpvm.bytecode.OpMap;
-import org.jpvm.objects.PyObject;
 import org.jpvm.objects.PyTupleObject;
 import org.jpvm.pycParser.CodeObject;
 
@@ -29,21 +28,21 @@ public class Disassember {
     public void dis() {
         HashSet<Object> enterPoint = new HashSet<>();
         Iterator<Instruction> iterator = buffer.iterator();
-        for (Instruction ins : buffer){
-            if(OpMap.instructions.containsKey(ins.getOpcode())){
-                if(ins.getOpName().toString().toLowerCase().contains("jump")){
+        for (Instruction ins : buffer) {
+            if (OpMap.instructions.containsKey(ins.getOpcode())) {
+                if (ins.getOpName().toString().toLowerCase().contains("jump")) {
                     enterPoint.add(ins.getOparg());
                 }
             }
         }
-            StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         while (iterator.hasNext()) {
             Instruction ins = iterator.next();
             if (!OpMap.instructions.containsKey(ins.getOpcode())) {
                 continue;
             }
             builder.delete(0, builder.length());
-            if(enterPoint.contains(ins.getPos())){
+            if (enterPoint.contains(ins.getPos())) {
                 builder.append(" >>");
             }
             builder.append("\t");

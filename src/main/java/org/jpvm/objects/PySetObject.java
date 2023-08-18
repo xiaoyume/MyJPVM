@@ -4,15 +4,18 @@ import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Set;
+
 @Data
-public class PySetObject extends PyObject{
+public class PySetObject extends PyObject {
     private Set<PyObject> set;
     private boolean isFrozen;
 
     public PySetObject(boolean isFrozen) {
+        this();
         this.isFrozen = isFrozen;
     }
-    public PySetObject(){
+
+    public PySetObject() {
         this.set = new HashSet<>();
     }
 
@@ -20,21 +23,22 @@ public class PySetObject extends PyObject{
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("{");
-        for (PyObject obj : set){
+        for (PyObject obj : set) {
             builder.append(obj.toString());
             builder.append(", ");
         }
-        if(builder.length() > 2){
+        if (builder.length() > 2) {
             builder.delete(builder.length() - 2, builder.length());
         }
         builder.append("}");
         return builder.toString();
     }
 
-    public void put(PyObject key){
+    public void put(PyObject key) {
         set.add(key);
     }
-    public boolean contains(PyObject key){
+
+    public boolean contains(PyObject key) {
         return set.contains(key);
     }
 
