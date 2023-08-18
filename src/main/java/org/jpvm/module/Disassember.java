@@ -3,10 +3,13 @@ package org.jpvm.module;
 import lombok.Data;
 import org.jpvm.bytecode.ByteCodeBuffer;
 import org.jpvm.bytecode.Instruction;
+import org.jpvm.bytecode.OpMap;
 import org.jpvm.objects.PyObject;
 import org.jpvm.objects.PyTupleObject;
 import org.jpvm.pycParser.CodeObject;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 @Data
@@ -24,14 +27,26 @@ public class Disassember {
      * 字节码反编译
      */
     public void dis() {
+        HashSet<Object> enterPoint = new HashSet<>();
         Iterator<Instruction> iterator = buffer.iterator();
-        StringBuilder builder = new StringBuilder();
+        for (Instruction ins : buffer){
+            if(OpMap.instructions.containsKey(ins.getOpcode())){
+                if(ins.getOpName().toString().toLowerCase().contains("jump")){
+                    enterPoint.add(ins.getOparg());
+                }
+            }
+        }
+            StringBuilder builder = new StringBuilder();
         while (iterator.hasNext()) {
             Instruction ins = iterator.next();
-            if (ins.getOpcode() == 0) {
-                break;
+            if (!OpMap.instructions.containsKey(ins.getOpcode())) {
+                continue;
             }
             builder.delete(0, builder.length());
+            if(enterPoint.contains(ins.getPos())){
+                builder.append(" >>");
+            }
+            builder.append("\t");
             builder.append(String.format("%4d", ins.getPos()));
             builder.append(" ");
             builder.append(String.format("%-15s", ins.getOpName()));
@@ -53,7 +68,7 @@ public class Disassember {
                     }
 
                 }
-                case STORE_NAME, LOAD_NAME -> {
+                case STORE_NAME, LOAD_NAME, IMPORT_NAME -> {
                     var coNames = (PyTupleObject) codeObject.getCoNames();
                     builder.append("(").append(coNames.get(ins.getOparg())).append(")");
                 }

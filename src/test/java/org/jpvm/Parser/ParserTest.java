@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class ParserTest {
@@ -41,8 +42,10 @@ public class ParserTest {
 
     @Test
     public void test1(){
-        byte b = 'a';
+        byte b = 99;
+        byte[] bytes = new byte[]{99,98};
         System.out.println(b);
+        System.out.println(new String(bytes, StandardCharsets.UTF_8));
     }
 
     @Test
@@ -66,6 +69,17 @@ public class ParserTest {
     @Test
     public void disTest() throws IOException, IllegalAccessException {
         String fpath = "src/test/resources/pys/__pycache__/add.cpython-38.pyc";
+        PycReader pycReader = new PycReader(fpath);
+        pycReader.doParse();
+        CodeObject codeObject = pycReader.getCodeObject();
+        Disassember disassember = new Disassember(codeObject);
+        disassember.dis();
+
+    }
+
+    @Test
+    public void loopTest() throws IOException, IllegalAccessException {
+        String fpath = "src/test/resources/pys/__pycache__/loop.cpython-38.pyc";
         PycReader pycReader = new PycReader(fpath);
         pycReader.doParse();
         CodeObject codeObject = pycReader.getCodeObject();

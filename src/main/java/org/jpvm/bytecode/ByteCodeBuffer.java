@@ -6,7 +6,7 @@ import org.jpvm.pycParser.CodeObject;
 
 import java.util.Iterator;
 @Data
-public class ByteCodeBuffer {
+public class ByteCodeBuffer implements Iterable<Instruction>{
     private final CodeObject codeObject;
     private final PyByteObject code;
     private final byte[] codeBuf;
