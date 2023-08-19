@@ -12,6 +12,7 @@ public class PyUnicodeObject extends PyObject {
         this.data = data;
     }
 
+    //字节数组转字符串
     public String getData() {
         return new String(data, StandardCharsets.UTF_8);
     }

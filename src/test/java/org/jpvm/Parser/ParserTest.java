@@ -87,5 +87,17 @@ public class ParserTest {
         disassember.dis();
     }
 
+    @Test
+    public void test11(){
+        String s = "sjfdjsfj";
+        byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
+        System.out.println(bytes[1
+
+
+
+
+                ]);
+    }
+
 
 }

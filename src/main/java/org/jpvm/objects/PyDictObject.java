@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 @Data
 public class PyDictObject extends PyObject{
-    private Map<PyObject, PyObject> map;
+    private final Map<PyObject, PyObject> map;
     public PyDictObject(){
         this.map = new HashMap<>();
     }
