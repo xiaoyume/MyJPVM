@@ -1,11 +1,12 @@
 package org.jpvm.objects;
 
 import lombok.Data;
+import org.jpvm.objects.pyinterface.PyArgs;
 
 import java.util.HashMap;
 import java.util.Map;
 @Data
-public class PyDictObject extends PyObject{
+public class PyDictObject extends PyObject implements PyArgs {
     private final Map<PyObject, PyObject> map;
     public PyDictObject(){
         this.map = new HashMap<>();
@@ -33,5 +34,10 @@ public class PyDictObject extends PyObject{
         }
         builder.append("}");
         return builder.toString();
+    }
+
+    @Override
+    public Object toJavaType() {
+        return map;
     }
 }

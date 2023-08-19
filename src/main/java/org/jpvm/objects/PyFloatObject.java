@@ -1,9 +1,10 @@
 package org.jpvm.objects;
 
 import lombok.Data;
+import org.jpvm.objects.pyinterface.PyArgs;
 
 @Data
-public class PyFloatObject extends PyObject {
+public class PyFloatObject extends PyObject implements PyArgs {
     private double data;
 
     public PyFloatObject(double data) {
@@ -17,5 +18,10 @@ public class PyFloatObject extends PyObject {
     @Override
     public String toString() {
         return String.valueOf(data);
+    }
+
+    @Override
+    public Object toJavaType() {
+        return data;
     }
 }

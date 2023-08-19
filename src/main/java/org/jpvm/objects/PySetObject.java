@@ -1,12 +1,13 @@
 package org.jpvm.objects;
 
 import lombok.Data;
+import org.jpvm.objects.pyinterface.PyArgs;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class PySetObject extends PyObject {
+public class PySetObject extends PyObject implements PyArgs {
     private Set<PyObject> set;
     private boolean isFrozen;
 
@@ -42,4 +43,8 @@ public class PySetObject extends PyObject {
         return set.contains(key);
     }
 
+    @Override
+    public Object toJavaType() {
+        return set;
+    }
 }

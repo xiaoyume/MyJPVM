@@ -1,8 +1,10 @@
 package org.jpvm.objects;
 
+import org.jpvm.objects.pyinterface.PyArgs;
+
 import java.util.Arrays;
 
-public class PyTupleObject extends PyObject {
+public class PyTupleObject extends PyObject implements PyArgs {
     private final PyObject[] obItem;
 
     public PyTupleObject(int size) {
@@ -33,5 +35,10 @@ public class PyTupleObject extends PyObject {
         }
         builder.append(")");
         return builder.toString();
+    }
+
+    @Override
+    public Object toJavaType() {
+        return obItem;
     }
 }

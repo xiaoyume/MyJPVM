@@ -1,11 +1,12 @@
 package org.jpvm.objects;
 
 import lombok.Data;
+import org.jpvm.objects.pyinterface.PyArgs;
 
 import java.util.Arrays;
 
 @Data
-public class PyByteObject extends PyObject {
+public class PyByteObject extends PyObject implements PyArgs {
 
     private byte[] data;
 
@@ -18,5 +19,10 @@ public class PyByteObject extends PyObject {
         return "PyByteObject{" +
                 "data=" + Arrays.toString(data) +
                 '}';
+    }
+
+    @Override
+    public Object toJavaType() {
+        return data;
     }
 }

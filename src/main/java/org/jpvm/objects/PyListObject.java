@@ -1,13 +1,14 @@
 package org.jpvm.objects;
 
 import lombok.Data;
+import org.jpvm.objects.pyinterface.PyArgs;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Data
-public class PyListObject extends PyObject {
+public class PyListObject extends PyObject implements PyArgs {
     private final List<PyObject> obItem;
 
     public PyListObject() {
@@ -72,5 +73,10 @@ public class PyListObject extends PyObject {
         }
         builder.append("]");
         return builder.toString();
+    }
+
+    @Override
+    public Object toJavaType() {
+        return obItem;
     }
 }
