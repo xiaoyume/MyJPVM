@@ -1,14 +1,21 @@
 package org.jpvm.objects;
 
+import lombok.Builder;
 import lombok.Data;
 import org.jpvm.objects.pyinterface.PyArgs;
+import org.jpvm.objects.pyinterface.TypeDoIterate;
+import org.jpvm.objects.pyinterface.TypeIterable;
+import org.jpvm.objects.pyinterface.TypeName;
+import org.jpvm.objects.types.PyListType;
+import org.jpvm.python.BuiltIn;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Data
-public class PyListObject extends PyObject implements PyArgs {
+public class PyListObject extends PyObject implements PyArgs, TypeIterable {
+    public static PyObject type = new PyListType();
     private final List<PyObject> obItem;
 
     public PyListObject() {
@@ -22,25 +29,26 @@ public class PyListObject extends PyObject implements PyArgs {
     public void app1(PyObject obj) {
         obItem.add(obj);
     }
+    public void append(PyObject obj){
+        obItem.add(obj);
+    }
 
     public void insert(int idx, PyObject obj) {
         obItem.add(idx, obj);
     }
 
-    public PyObject pop() {
+    public boolean pop() {
         if (obItem.size() == 0) {
             throw new IndexOutOfBoundsException("list has no elements");
         }
-        PyObject obj = obItem.get(obItem.size() - 1);
-        obItem.remove(obItem.size() - 1);
-        return obj;
+        return obItem.remove(obItem.size() - 1) != null;//移除list最后一个元素后是否为空
     }
 
     public boolean remove(PyObject obj) {
         return obItem.remove(obj);
     }
 
-    public void reverse() {
+    public void sort() {
         Collections.reverse(obItem);
     }
 
@@ -76,7 +84,47 @@ public class PyListObject extends PyObject implements PyArgs {
     }
 
     @Override
+    public Object getType() {
+        return type;
+    }
+
+    @Override
     public Object toJavaType() {
         return obItem;
+    }
+
+    public static PyBoolObject check(PyObject o){
+        return new PyBoolObject(o == type);
+    }
+
+    @Override
+    public PyObject getIterator() {return new PyListItrObject();}
+
+    public static class PyListItrType extends PyObject implements TypeName{
+        private final PyUnicodeObject name;
+        public PyListItrType(){
+            name = new PyUnicodeObject("list_iterator");
+        }
+
+        @Override
+        public PyUnicodeObject getTypeName() {
+            return name;
+        }
+    }
+
+    public class PyListItrObject extends PyObject implements TypeDoIterate{
+        public static PyObject type = new PyListItrType();
+        private int idx;
+        public PyListItrObject(){
+            idx = 0;
+        }
+
+        @Override
+        public PyObject next() {
+            if(idx < obItem.size()){
+                return obItem.get(idx ++);
+            }
+            return BuiltIn.PyExcStopIteration;
+        }
     }
 }

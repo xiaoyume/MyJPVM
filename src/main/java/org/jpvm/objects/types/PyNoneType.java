@@ -4,7 +4,7 @@ import org.jpvm.objects.PyObject;
 import org.jpvm.objects.PyUnicodeObject;
 
 public class PyNoneType extends PyObject {
-    private final Object name;
+    private final PyUnicodeObject name;
     public static Object parentType = PyTypeType.parentType;
     public PyNoneType(){
         name = new PyUnicodeObject("none");
