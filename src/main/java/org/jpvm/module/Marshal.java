@@ -2,11 +2,10 @@ package org.jpvm.module;
 
 import org.jpvm.objects.*;
 import org.jpvm.pycParser.CodeObject;
+import org.jpvm.python.BuiltIn;
 
-import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
