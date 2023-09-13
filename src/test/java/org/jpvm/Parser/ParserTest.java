@@ -56,7 +56,7 @@ public class ParserTest {
         CodeObject codeObject = pycReader.getCodeObject();
         System.out.println(codeObject);
         ByteCodeBuffer codeBuffer = new ByteCodeBuffer(codeObject);
-        System.out.println(codeBuffer.getCode());
+        System.out.println(codeBuffer.getCodeBuf());
         Iterator<Instruction> iterator = codeBuffer.iterator();
         while (iterator.hasNext()){
             Instruction next = iterator.next();
@@ -91,12 +91,7 @@ public class ParserTest {
     public void test11(){
         String s = "sjfdjsfj";
         byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
-        System.out.println(bytes[1
-
-
-
-
-                ]);
+        System.out.println(bytes[1]);
     }
 
 

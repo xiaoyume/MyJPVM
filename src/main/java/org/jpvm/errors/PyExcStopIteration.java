@@ -1,5 +1,7 @@
 package org.jpvm.errors;
 
+import org.jpvm.objects.PyUnicodeObject;
+
 public class PyExcStopIteration extends PyException {
 
     public PyExcStopIteration(String msg) {
@@ -7,7 +9,7 @@ public class PyExcStopIteration extends PyException {
     }
 
     @Override
-    public void log() {
-        System.err.println("PyExcStopIteration:" + getMessage());
+    public PyUnicodeObject log() {
+        return new PyUnicodeObject("PyExcStopIteration:" + getMessage());
     }
 }

@@ -8,13 +8,11 @@ import java.util.Iterator;
 
 @Data
 public class ByteCodeBuffer implements Iterable<Instruction> {
-    private final CodeObject codeObject;
-    private final PyByteObject code;
+
     private final byte[] codeBuf;
 
     public ByteCodeBuffer(CodeObject codeObject) {
-        this.codeObject = codeObject;
-        code = (PyByteObject) codeObject.getCoCode();
+        PyByteObject code = (PyByteObject) codeObject.getCoCode();
         codeBuf = code.getData();
     }
 

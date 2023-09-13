@@ -1,10 +1,13 @@
 package org.jpvm.objects;
 
 import org.jpvm.objects.pyinterface.PyArgs;
+import org.jpvm.objects.types.PySetType;
+import org.jpvm.objects.types.PyTupleType;
 
 import java.util.Arrays;
 
 public class PyTupleObject extends PyObject implements PyArgs {
+    public static PyObject type = new PyTupleType();
     private final PyObject[] obItem;
 
     public PyTupleObject(int size) {
@@ -40,5 +43,18 @@ public class PyTupleObject extends PyObject implements PyArgs {
     @Override
     public Object toJavaType() {
         return obItem;
+    }
+
+    public int size(){
+        return obItem.length;
+    }
+
+    @Override
+    public Object getType() {
+        return type;
+    }
+
+    public static PyBoolObject check(PyObject o){
+        return new PyBoolObject(o == type);
     }
 }

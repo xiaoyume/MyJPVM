@@ -2,6 +2,7 @@ package org.jpvm.errors;
 
 import lombok.Data;
 import org.jpvm.objects.PyObject;
+import org.jpvm.objects.PyUnicodeObject;
 
 @Data
 public class PyException extends PyObject implements PyExcLogging {
@@ -13,8 +14,8 @@ public class PyException extends PyObject implements PyExcLogging {
 
 
     @Override
-    public void log() {
-        System.err.println(message);
+    public PyUnicodeObject log() {
+        return new PyUnicodeObject(message);
     }
 
 

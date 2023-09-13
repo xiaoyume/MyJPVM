@@ -18,7 +18,7 @@ public class PyDictObject extends PyObject implements PyArgs {
         return map.put(key, val);
     }
 
-    public PyObject add(PyObject key, PyObject val){return map.put(key, val)};
+    public PyObject add(PyObject key, PyObject val){return map.put(key, val);}
     public PyObject get(PyObject key){
         return map.get(key);
     }

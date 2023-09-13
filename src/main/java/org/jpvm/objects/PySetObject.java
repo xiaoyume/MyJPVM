@@ -63,7 +63,7 @@ public class PySetObject extends PyObject implements PyArgs, TypeIterable {
 
     @Override
     public PyObject getIterator() {
-
+        return new PysetItrObject();
     }
 
     public static class PySetItrType extends  PyObject implements TypeName{

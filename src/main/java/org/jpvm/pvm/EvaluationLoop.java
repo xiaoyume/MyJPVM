@@ -1,5 +1,6 @@
 package org.jpvm.pvm;
 
+import org.jpvm.objects.PyFrameObject;
 import org.jpvm.pycParser.CodeObject;
 
 public class EvaluationLoop {

@@ -49,4 +49,13 @@ public class PyUnicodeObject extends PyObject implements PyArgs {
     public int hashCode() {
         return Arrays.hashCode(data);
     }
+
+    @Override
+    public Object getType() {
+        return type;
+    }
+
+    public static PyBoolObject check(PyObject o){
+        return new PyBoolObject(o == type);
+    }
 }
