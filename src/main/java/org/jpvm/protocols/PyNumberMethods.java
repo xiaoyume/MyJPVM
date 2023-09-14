@@ -13,7 +13,7 @@ public interface PyNumberMethods {
         return Global.notImplemented;
     }
 
-    default PyObject mul(Object o){
+    default PyObject mul(PyObject o){
         return Global.notImplemented;
     }
 
@@ -29,19 +29,19 @@ public interface PyNumberMethods {
         return Global.notImplemented;
     }
 
-    default PyObject neg(PyObject o){
+    default PyObject neg(){
         return Global.notImplemented;
     }
-    default PyObject pos(PyObject o){
+    default PyObject pos(){
         return Global.notImplemented;
     }
-    default PyObject abs(PyObject o){
+    default PyObject abs(){
         return Global.notImplemented;
     }
-    default PyObject bool(PyObject o){
+    default PyObject bool(){
         return Global.notImplemented;
     }
-    default PyObject invert(PyObject o){
+    default PyObject invert(){
         return Global.notImplemented;
     }
     default PyObject lshift(PyObject o){
@@ -76,7 +76,7 @@ public interface PyNumberMethods {
     /**
      * implementation of corresponding cpython nb_float
      */
-    default PyObject nbFloat(PyObject l) {
+    default PyObject nbFloat() {
         return Global.notImplemented;
     }
 
