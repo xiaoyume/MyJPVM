@@ -8,7 +8,7 @@ import org.jpvm.protocols.PyNumberMethods;
 import org.jpvm.python.BuiltIn;
 
 @Data
-public class PyLongObject extends PyObject implements PyArgs, PyNumberMethods {
+public class PyLongObject extends PyObject implements PyNumberMethods {
     public static PyObject type = new PyLongType();
     private long data;
 
@@ -28,6 +28,11 @@ public class PyLongObject extends PyObject implements PyArgs, PyNumberMethods {
     @Override
     public Object getType() {
         return type;
+    }
+
+    @Override
+    public PyUnicodeObject getTypeName() {
+        return type.getTypeName();
     }
 
     @Override
@@ -66,42 +71,42 @@ public class PyLongObject extends PyObject implements PyArgs, PyNumberMethods {
     }
 
     @Override
-    public PyObject add(PyObject o) {
+    public PyObject add(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply function add on int and" + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply function add on int and" + o.getTypeName());
         }
         return new PyLongObject(data + ((PyLongObject)o).getData());
 
     }
 
     @Override
-    public PyObject sub(PyObject o) {
+    public PyObject sub(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply function sub on int and" + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply function sub on int and" + o.getTypeName());
         }
         return new PyLongObject(data - ((PyLongObject)o).getData());
     }
 
     @Override
-    public PyObject mul(PyObject o) {
+    public PyObject mul(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply function mul on int and" + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply function mul on int and" + o.getTypeName());
         }
         return new PyLongObject(data * ((PyLongObject)o).getData());
     }
 
     @Override
-    public PyObject mod(PyObject o) {
+    public PyObject mod(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply function mod on int and" + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply function mod on int and" + o.getTypeName());
         }
         return new PyLongObject(data % ((PyLongObject)o).getData());
     }
 
     @Override
-    public PyObject divmod(PyObject o) {
+    public PyObject divmod(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("can not apply function divmod on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("can not apply function divmod on int and " + o.getTypeName());
         }
         PyTupleObject tupleObject = new PyTupleObject(2);
         tupleObject.set(0, trueDiv(o));
@@ -110,9 +115,9 @@ public class PyLongObject extends PyObject implements PyArgs, PyNumberMethods {
     }
 
     @Override
-    public PyObject pow(PyObject o) {
+    public PyObject pow(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply function pow on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply function pow on int and " + o.getTypeName());
         }
         return new PyLongObject((long)Math.pow(data, ((PyLongObject) o).getData()));
     }
@@ -143,66 +148,66 @@ public class PyLongObject extends PyObject implements PyArgs, PyNumberMethods {
     }
 
     @Override
-    public PyObject lshift(PyObject o) {
+    public PyObject lshift(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply << on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply << on int and " + o.getTypeName());
         }
         return new PyLongObject(data << ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject rshift(PyObject o) {
+    public PyObject rshift(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply >> on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply >> on int and " + o.getTypeName());
         }
         return new PyLongObject(data >> ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject and(PyObject o) {
+    public PyObject and(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply and on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply and on int and " + o.getTypeName());
         }
         return new PyLongObject(data & ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject xor(PyObject o) {
+    public PyObject xor(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply xor on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply xor on int and " + o.getTypeName());
         }
         return new PyLongObject(data ^ ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject or(PyObject o) {
+    public PyObject or(PyObject o) throws PyTypeNotMatch {
         if(!(o instanceof PyLongObject)){
-            return new PyTypeNotMatch("cannot apply or on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("cannot apply or on int and " + o.getTypeName());
         }
         return new PyLongObject(data | ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject nbInt(PyObject o) {
-        return PyNumberMethods.super.nbInt(o);
+    public PyObject nbInt() {
+        return new PyLongObject(data);
     }
 
     @Override
-    public PyObject floorDiv(PyObject o) {
+    public PyObject floorDiv(PyObject o) throws PyTypeNotMatch {
         if (!(o instanceof PyLongObject))
-            return new PyTypeNotMatch("can apply / on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("can apply / on int and " + o.getTypeName());
         return new PyLongObject(data /  ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject trueDiv(PyObject o) {
+    public PyObject trueDiv(PyObject o) throws PyTypeNotMatch {
         if (!(o instanceof PyLongObject))
-            return new PyTypeNotMatch("can apply & on int and " + o.getTypeName());
+            throw new PyTypeNotMatch("can apply & on int and " + o.getTypeName());
         return new PyFloatObject((double) data /  ((PyLongObject) o).getData());
     }
 
     @Override
-    public PyObject index(PyObject o) {
+    public PyObject index() {
         return new PyLongObject(data);
     }
 }

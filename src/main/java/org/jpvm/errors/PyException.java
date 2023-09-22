@@ -5,7 +5,7 @@ import org.jpvm.objects.PyObject;
 import org.jpvm.objects.PyUnicodeObject;
 
 @Data
-public class PyException extends PyObject implements PyExcLogging {
+public class PyException extends Exception implements PyExcLogging {
     private String message;
 
     public PyException(String msg) {

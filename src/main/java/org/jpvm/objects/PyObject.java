@@ -5,7 +5,8 @@ import org.jpvm.objects.pyinterface.*;
 import org.jpvm.objects.types.PyBaseObjectType;
 @Data
 public class PyObject implements PyArgs, TypeCheck,
-        TypeName, TypeStr, TypeRepr, TypeHash, TypeRichCompare {
+        TypeName, TypeStr, TypeRepr, TypeHash, TypeRichCompare, TypeNew,
+        TypeInit, TypeCall, PyHashable{
 
     public static Object type = new PyBaseObjectType();
     public static PyUnicodeObject name;
@@ -36,10 +37,7 @@ public class PyObject implements PyArgs, TypeCheck,
 
     @Override
     public PyLongObject hash() {
-        if(hashcode == null){
-            hashcode = new PyLongObject(hashCode());
-        }
-        return hashcode;
+        return new PyLongObject(0);
     }
 
     @Override
@@ -64,4 +62,10 @@ public class PyObject implements PyArgs, TypeCheck,
     public PyUnicodeObject str() {
         return getTypeName();
     }
+
+    @Override
+    public int hashCode(){
+        return (int) hash().getData();
+    }
+
 }

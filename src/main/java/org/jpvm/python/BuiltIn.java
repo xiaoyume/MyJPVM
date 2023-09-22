@@ -1,5 +1,6 @@
 package org.jpvm.python;
 
+import org.jpvm.errors.PyExcStopIteration;
 import org.jpvm.errors.PyException;
 import org.jpvm.objects.PyBoolObject;
 import org.jpvm.objects.PyNoneObject;
@@ -13,7 +14,7 @@ public class BuiltIn {
     public static PyNoneObject NULL = new PyNoneObject();
     public static PyObject ELLIPSIS = new PyObject();
     public static PySetObject FROZENSET = new PySetObject(true);
-    public static PyObject PyExcStopIteration = new PyException("PyExcStopIteration");
+    public static PyObject PyExcStopIteration = new PyExcStopIteration();
 
     public PyObject print(PyObject... objs){
         for(PyObject obj : objs){

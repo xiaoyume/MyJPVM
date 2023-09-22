@@ -3,11 +3,11 @@ package org.jpvm.objects.types;
 import org.jpvm.objects.PyObject;
 import org.jpvm.objects.PyUnicodeObject;
 
-public class PyLongType extends PyObject {
+public class PySliceType extends PyObject {
     private final PyUnicodeObject name;
     public Object parentType = PyTypeType.parentType;
-    public PyLongType(){
-        name = new PyUnicodeObject("int");
+    public PySliceType(){
+        name = new PyUnicodeObject("slice");
     }
 
     @Override
@@ -18,10 +18,5 @@ public class PyLongType extends PyObject {
     @Override
     public Object getType() {
         return parentType;
-    }
-
-    @Override
-    public String toString() {
-        return "PyLongType{" + "name=" + name.getData() + "}";
     }
 }

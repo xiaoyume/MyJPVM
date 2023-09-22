@@ -2,9 +2,10 @@ package org.jpvm.objects;
 
 import lombok.Data;
 import org.jpvm.objects.types.PyComplexType;
+import org.jpvm.protocols.PyNumberMethods;
 
 @Data
-public class PyComplexObject extends PyObject {
+public class PyComplexObject extends PyObject implements PyNumberMethods {
     public static PyObject type = new PyComplexType();
     private PyFloatObject real;
     private PyFloatObject image;
