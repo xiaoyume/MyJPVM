@@ -85,21 +85,21 @@ public interface PyNumberMethods {
     /**
      * implementation of corresponding cpython nb_inplace_add
      */
-    default PyObject inplaceAdd(PyObject o) throws PyNotImplemented {
+    default PyObject inplaceAdd(PyObject o) throws PyNotImplemented, PyTypeNotMatch {
         throw new PyNotImplemented("inplaceAdd is not implemeted");
     }
 
     /**
      * implementation of corresponding cpython nb_inplace_subtract
      */
-    default PyObject inplaceSub(PyObject o) throws PyNotImplemented {
+    default PyObject inplaceSub(PyObject o) throws PyNotImplemented, PyTypeNotMatch {
         throw new PyNotImplemented("inplaceSub is not implemeted");
     }
 
     /**
      * implementation of corresponding cpython nb_inplace_multiply
      */
-    default PyObject inplaceMul(PyObject o) throws PyNotImplemented {
+    default PyObject inplaceMul(PyObject o) throws PyNotImplemented, PyTypeNotMatch {
         throw new PyNotImplemented("inplaceMul is not implemeted");
     }
 
@@ -134,21 +134,21 @@ public interface PyNumberMethods {
     /**
      * implementation of corresponding cpython nb_inplace_and
      */
-    default PyObject inplaceAnd(PyObject o) throws PyNotImplemented {
+    default PyObject inplaceAnd(PyObject o) throws PyNotImplemented, PyTypeNotMatch {
         throw new PyNotImplemented("inplaceAnd is not implemeted");
     }
 
     /**
      * implementation of corresponding cpython nb_inplace_xor
      */
-    default PyObject inplaceXor(PyObject o) throws PyNotImplemented {
+    default PyObject inplaceXor(PyObject o) throws PyNotImplemented, PyTypeNotMatch {
         throw new PyNotImplemented("inplaceXor is not implemeted");
     }
 
     /**
      * implementation of corresponding cpython nb_inplace_or
      */
-    default PyObject inplaceOr(PyObject o) throws PyNotImplemented {
+    default PyObject inplaceOr(PyObject o) throws PyNotImplemented, PyTypeNotMatch {
         throw new PyNotImplemented("inplaceOr is not implemeted");
     }
 
@@ -186,4 +186,14 @@ public interface PyNumberMethods {
     default PyObject index() throws PyNotImplemented {
         throw new PyNotImplemented("index is not implemeted");
     }
+
+    default PyObject matrixMul() throws PyNotImplemented {
+        throw new PyNotImplemented("matrixMul is not implemented");
+    }
+
+    default PyObject inplaceMatrixMul() throws PyNotImplemented {
+        throw new PyNotImplemented("inplaceMatrixMul is not implemented");
+    }
+
+
 }

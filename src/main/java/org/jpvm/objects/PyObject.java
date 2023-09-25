@@ -4,7 +4,7 @@ import lombok.Data;
 import org.jpvm.objects.pyinterface.*;
 import org.jpvm.objects.types.PyBaseObjectType;
 @Data
-public class PyObject implements PyArgs, TypeCheck,
+public class PyObject extends Exception implements PyArgs, TypeCheck,
         TypeName, TypeStr, TypeRepr, TypeHash, TypeRichCompare, TypeNew,
         TypeInit, TypeCall, PyHashable{
 
